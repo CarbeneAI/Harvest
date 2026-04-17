@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 400" width="1200" height="400">
+  <defs>
+    <linearGradient id="bg-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f172a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#14532d;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="harvest-grad" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#22c55e;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#16a34a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#059669;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="text-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#f8fafc;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#cbd5e1;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="chart-grad" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#22c55e;stop-opacity:0.3" />
+      <stop offset="100%" style="stop-color:#22c55e;stop-opacity:0.8" />
+    </linearGradient>
+    <filter id="glow-banner">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+    <filter id="text-shadow">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#000" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="400" fill="url(#bg-grad)"/>
+
+  <!-- Subtle grid pattern -->
+  <g opacity="0.03">
+    <line x1="0" y1="0" x2="0" y2="400" stroke="white" stroke-width="1"/>
+    <line x1="60" y1="0" x2="60" y2="400" stroke="white" stroke-width="1"/>
+    <line x1="120" y1="0" x2="120" y2="400" stroke="white" stroke-width="1"/>
+    <line x1="180" y1="0" x2="180" y2="400" stroke="white" stroke-width="1"/>
+    <line x1="240" y1="0" x2="240" y2="400" stroke="white" stroke-width="1"/>
+    <line x1="300" y1="0" x2="300" y2="400" stroke="white" stroke-width="1"/>
+    <line x1="360" y1="0" x2="360" y2="400" stroke="white" stroke-width="1"/>
+    <line x1="420" y1="0" x2="420" y2="400" stroke="white" stroke-width="1"/>
+    <line x1="0" y1="60" x2="1200" y2="60" stroke="white" stroke-width="1"/>
+    <line x1="0" y1="120" x2="1200" y2="120" stroke="white" stroke-width="1"/>
+    <line x1="0" y1="180" x2="1200" y2="180" stroke="white" stroke-width="1"/>
+    <line x1="0" y1="240" x2="1200" y2="240" stroke="white" stroke-width="1"/>
+    <line x1="0" y1="300" x2="1200" y2="300" stroke="white" stroke-width="1"/>
+    <line x1="0" y1="360" x2="1200" y2="360" stroke="white" stroke-width="1"/>
+  </g>
+
+  <!-- Icon group (left side) - Upward trending chart -->
+  <g transform="translate(100, 60) scale(0.55)" filter="url(#glow-banner)">
+    <!-- Chart area fill -->
+    <path d="M 100 350 L 150 300 L 210 320 L 270 250 L 330 270 L 390 180 L 420 140 L 420 350 Z" fill="url(#chart-grad)" opacity="0.4"/>
+
+    <!-- Chart line -->
+    <polyline points="100,300 150,300 210,320 270,250 330,270 390,180 420,140" fill="none" stroke="url(#harvest-grad)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+
+    <!-- Arrow head at top -->
+    <polygon points="420,140 400,160 410,155 405,180 425,180 420,155 430,160" fill="#22c55e"/>
+
+    <!-- Candlesticks -->
+    <g opacity="0.6">
+      <rect x="148" y="280" width="6" height="40" rx="1" fill="#22c55e"/>
+      <rect x="208" y="300" width="6" height="40" rx="1" fill="#ef4444"/>
+      <rect x="268" y="230" width="6" height="40" rx="1" fill="#22c55e"/>
+      <rect x="328" y="250" width="6" height="40" rx="1" fill="#ef4444"/>
+      <rect x="388" y="160" width="6" height="40" rx="1" fill="#22c55e"/>
+    </g>
+
+    <!-- Data points -->
+    <circle cx="150" cy="300" r="6" fill="#22c55e" opacity="0.9"/>
+    <circle cx="210" cy="320" r="5" fill="#22c55e" opacity="0.8"/>
+    <circle cx="270" cy="250" r="6" fill="#22c55e" opacity="0.9"/>
+    <circle cx="330" cy="270" r="5" fill="#22c55e" opacity="0.8"/>
+    <circle cx="390" cy="180" r="6" fill="#22c55e" opacity="0.9"/>
+    <circle cx="420" cy="140" r="7" fill="#22c55e" opacity="1"/>
+
+    <!-- Spark particles -->
+    <circle cx="430" cy="120" r="3" fill="#4ade80" opacity="0.7"/>
+    <circle cx="440" cy="135" r="2" fill="#86efac" opacity="0.6"/>
+    <circle cx="415" cy="115" r="2" fill="#22c55e" opacity="0.5"/>
+  </g>
+
+  <!-- Main title -->
+  <text x="460" y="195" font-family="system-ui, -apple-system, sans-serif" font-weight="800" font-size="120" fill="url(#text-grad)" filter="url(#text-shadow)" letter-spacing="8">HARVEST</text>
+
+  <!-- Tagline -->
+  <text x="464" y="245" font-family="system-ui, -apple-system, sans-serif" font-weight="400" font-size="24" fill="#94a3b8" letter-spacing="6">AI TRADING PIPELINE</text>
+
+  <!-- Divider line -->
+  <line x1="464" y1="265" x2="700" y2="265" stroke="url(#harvest-grad)" stroke-width="2" opacity="0.4"/>
+
+  <!-- Description -->
+  <text x="464" y="300" font-family="system-ui, -apple-system, sans-serif" font-weight="300" font-size="18" fill="#64748b">Momentum + mean reversion with AI risk management</text>
+  <text x="464" y="328" font-family="system-ui, -apple-system, sans-serif" font-weight="300" font-size="18" fill="#64748b">Dual strategy  |  Market regime filtering  |  Alpaca integration</text>
+
+  <!-- CarbeneAI badge -->
+  <g transform="translate(464, 350)">
+    <rect width="160" height="30" rx="15" fill="none" stroke="#475569" stroke-width="1"/>
+    <text x="80" y="20" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif" font-weight="500" font-size="12" fill="#94a3b8" letter-spacing="2">BY CARBENEAI</text>
+  </g>
+</svg>

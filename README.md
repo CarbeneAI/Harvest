@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="images/banner.svg" alt="Harvest Banner" width="100%">
+</p>
+
 # Harvest
 
 Automated stock trading pipeline built with TypeScript and Bun. Harvest combines multi-strategy scanning, AI-powered research, and disciplined risk management to generate and execute swing trade signals via the Alpaca paper trading API.
