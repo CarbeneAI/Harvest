@@ -1,0 +1,25 @@
+# Environment and secrets
+.env
+*.env.local
+
+# Data directory (personal trade data, journals, scan results)
+data/
+
+# Node/Bun
+node_modules/
+dist/
+.bun/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/settings.json
+.idea/
+*.swp
+*.swo
+
+# Temp files
+/tmp/yahoo-finance-crumb.json
+*.log

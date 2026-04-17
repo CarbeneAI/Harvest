@@ -1,0 +1,113 @@
+{
+  "scanTime": "2026-04-16T14:00:00.000Z",
+  "scanType": "strategy-multiscan",
+  "regime": {
+    "regime": "BULL",
+    "spyPrice": 512.34,
+    "sma200": 478.21,
+    "sma50": 499.83,
+    "details": "SPY above both 200 SMA and 50 SMA"
+  },
+  "recommendations": [
+    {
+      "id": "REC-20260416-001",
+      "ticker": "NVDA",
+      "direction": "long",
+      "entryPrice": 877.50,
+      "stopLoss": 841.32,
+      "takeProfit": 953.15,
+      "conviction": 8,
+      "thesis": "Multi-signal momentum: price above 20/50 SMA, RSI 62, MACD bullish, ADX 28, volume 1.4x avg. AI infrastructure demand driving sector momentum.",
+      "strength": "High",
+      "sources": ["Price > 20 SMA", "Price > 50 SMA", "RSI 40-70", "MACD Bullish", "Volume Above Avg", "ADX > 20", "Multi-TF Momentum"],
+      "strategy": "momentum",
+      "scanType": "strategy-multiscan",
+      "status": "pending",
+      "positionSize": 4875.00,
+      "riskMetrics": {
+        "annualizedVol": 0.42,
+        "volTier": "HIGH",
+        "baseSize": 0.04,
+        "volMultiplier": 0.85,
+        "corrMultiplier": 1.0,
+        "finalSize": 0.034
+      },
+      "fundamentalVerdict": "AMPLIFY",
+      "createdAt": "2026-04-16T14:00:15.000Z",
+      "expiresAt": "2026-04-16T21:00:00.000Z"
+    },
+    {
+      "id": "REC-20260416-002",
+      "ticker": "MSFT",
+      "direction": "long",
+      "entryPrice": 374.20,
+      "stopLoss": 361.45,
+      "takeProfit": 402.50,
+      "conviction": 7,
+      "thesis": "Momentum signals with strong fundamentals. Price above all SMAs, RSI 58, MACD bullish histogram expanding.",
+      "strength": "High",
+      "sources": ["Price > 20 SMA", "Price > 50 SMA", "RSI 40-70", "MACD Bullish", "ADX > 20"],
+      "strategy": "momentum",
+      "scanType": "strategy-multiscan",
+      "status": "pending",
+      "positionSize": 5000.00,
+      "riskMetrics": {
+        "annualizedVol": 0.22,
+        "volTier": "MODERATE",
+        "baseSize": 0.05,
+        "volMultiplier": 1.0,
+        "corrMultiplier": 0.95,
+        "finalSize": 0.0475
+      },
+      "fundamentalVerdict": "AMPLIFY",
+      "createdAt": "2026-04-16T14:00:18.000Z",
+      "expiresAt": "2026-04-16T21:00:00.000Z"
+    },
+    {
+      "id": "REC-20260416-003",
+      "ticker": "JNJ",
+      "direction": "long",
+      "entryPrice": 142.30,
+      "stopLoss": 138.15,
+      "takeProfit": 151.80,
+      "conviction": 7,
+      "thesis": "Mean reversion setup: RSI 32, Z-score -2.3, price below lower Bollinger Band. JNJ pulled back on sector rotation, above 200 SMA, Hurst 0.41 confirms mean-reverting behavior.",
+      "strength": "Medium",
+      "sources": ["RSI < 35", "Z-Score < -2", "Below Lower BB", "Hurst < 0.5", "Above 200 SMA"],
+      "strategy": "mean-reversion",
+      "scanType": "strategy-multiscan",
+      "status": "pending",
+      "positionSize": 4000.00,
+      "riskMetrics": {
+        "annualizedVol": 0.13,
+        "volTier": "LOW",
+        "baseSize": 0.04,
+        "volMultiplier": 1.0,
+        "corrMultiplier": 1.0,
+        "finalSize": 0.04
+      },
+      "fundamentalVerdict": "AMPLIFY",
+      "createdAt": "2026-04-16T14:00:22.000Z",
+      "expiresAt": "2026-04-16T21:00:00.000Z"
+    }
+  ],
+  "summary": {
+    "momentum": {
+      "scanned": 80,
+      "qualified": 14,
+      "topConviction": 8
+    },
+    "meanReversion": {
+      "scanned": 20,
+      "qualified": 3,
+      "topConviction": 7
+    },
+    "fundamentalFilter": {
+      "skipped": 0,
+      "dampened": 2,
+      "amplified": 5
+    },
+    "totalRecommendations": 17,
+    "autoExecuteEligible": 9
+  }
+}

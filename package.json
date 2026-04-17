@@ -1,0 +1,19 @@
+{
+  "name": "harvest",
+  "version": "1.0.0",
+  "description": "Automated stock trading pipeline with momentum and mean reversion strategies",
+  "scripts": {
+    "scan": "bun src/orchestration/MultiScan.ts",
+    "execute": "bun src/execution/AutoExecute.ts",
+    "monitor": "bun src/execution/PositionMonitor.ts --auto-sell",
+    "dashboard": "bun src/api/DashboardServer.ts",
+    "report": "bun src/reporting/DailyReport.ts",
+    "weekly": "bun src/reporting/WeeklyReport.ts",
+    "portfolio": "bun src/reporting/PortfolioReview.ts",
+    "backtest": "bun src/analysis/BacktestMetrics.ts",
+    "regime": "bun src/scanners/MarketRegime.ts",
+    "scan:momentum": "bun src/scanners/MomentumScanner.ts",
+    "scan:reversion": "bun src/scanners/MeanReversionScanner.ts"
+  },
+  "license": "MIT"
+}

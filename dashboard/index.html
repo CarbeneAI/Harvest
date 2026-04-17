@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Harvest Trading Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0a12;
+      --surface: #1a1a2e;
+      --cyan: #00d4ff;
+      --purple: #a855f7;
+      --magenta: #c026d3;
+      --silver: #94a3b8;
+      --white: #f8fafc;
+      --green: #22c55e;
+      --red: #ef4444;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--white);
+      min-height: 100vh;
+      padding: 1.5rem;
+    }
+
+    .container { max-width: 1400px; margin: 0 auto; }
+
+    header { text-align: center; margin-bottom: 2rem; }
+
+    .logo {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 2rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--cyan), var(--purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .tagline {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      color: var(--silver);
+      text-transform: uppercase;
+      margin-top: 0.25rem;
+    }
+
+    .nav-links {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 0.75rem;
+    }
+
+    .nav-links a {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      color: var(--cyan);
+      text-decoration: none;
+      text-transform: uppercase;
+      padding: 0.4rem 0.8rem;
+      border: 1px solid rgba(0,212,255,0.3);
+      border-radius: 6px;
+      transition: all 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      background: rgba(0,212,255,0.1);
+      border-color: var(--cyan);
+    }
+
+    /* Stats Bar */
+    .stats-bar {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid rgba(0,212,255,0.15);
+      border-radius: 12px;
+      padding: 1.25rem;
+      text-align: center;
+    }
+
+    .stat-card:hover {
+      border-color: rgba(0,212,255,0.4);
+      box-shadow: 0 0 20px rgba(0,212,255,0.1);
+    }
+
+    .stat-value {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.75rem;
+      font-weight: 700;
+    }
+
+    .stat-value.positive { color: var(--green); }
+    .stat-value.negative { color: var(--red); }
+    .stat-value.neutral {
+      background: linear-gradient(135deg, var(--cyan), var(--purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .stat-label {
+      font-size: 0.7rem;
+      color: var(--silver);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-top: 0.25rem;
+    }
+
+    /* Daily P&L progress bar */
+    .pl-progress {
+      width: 100%;
+      height: 6px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 3px;
+      margin-top: 0.5rem;
+      overflow: hidden;
+    }
+
+    .pl-progress-bar {
+      height: 100%;
+      border-radius: 3px;
+      transition: width 0.5s ease;
+    }
+
+    .pl-goal {
+      font-size: 0.65rem;
+      color: var(--silver);
+      margin-top: 0.25rem;
+    }
+
+    /* Section titles */
+    .section-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.9rem;
+      letter-spacing: 0.1em;
+      color: var(--cyan);
+      text-transform: uppercase;
+      margin: 1.5rem 0 1rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 1px solid rgba(0,212,255,0.2);
+    }
+
+    /* Recommendations */
+    .rec-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 1rem;
+    }
+
+    .rec-card {
+      background: var(--surface);
+      border: 1px solid rgba(0,212,255,0.15);
+      border-radius: 12px;
+      padding: 1.25rem;
+      transition: all 0.3s ease;
+    }
+
+    .rec-card:hover {
+      border-color: rgba(0,212,255,0.4);
+      box-shadow: 0 0 25px rgba(0,212,255,0.1);
+    }
+
+    .rec-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.75rem;
+    }
+
+    .rec-ticker {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+
+    .ticker-link {
+      color: inherit;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .ticker-link:hover {
+      color: var(--cyan);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    td .ticker-link { color: var(--white); }
+    td .ticker-link:hover { color: var(--cyan); }
+
+    .rec-direction {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.7rem;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .rec-direction.long { background: rgba(34,197,94,0.2); color: var(--green); }
+    .rec-direction.short { background: rgba(239,68,68,0.2); color: var(--red); }
+
+    .rec-conviction {
+      display: flex;
+      gap: 3px;
+      margin-bottom: 0.5rem;
+    }
+
+    .conviction-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.15);
+    }
+
+    .conviction-dot.filled { background: var(--cyan); }
+
+    .rec-thesis {
+      font-size: 0.85rem;
+      color: var(--silver);
+      margin-bottom: 0.75rem;
+      line-height: 1.4;
+    }
+
+    .rec-levels {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.5rem;
+      margin-bottom: 0.75rem;
+      font-size: 0.8rem;
+    }
+
+    .rec-level {
+      text-align: center;
+      padding: 0.4rem;
+      border-radius: 6px;
+      background: rgba(255,255,255,0.05);
+    }
+
+    .rec-level-label {
+      font-size: 0.65rem;
+      color: var(--silver);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .rec-level-value { font-weight: 600; margin-top: 0.15rem; }
+    .rec-level-value.entry { color: var(--cyan); }
+    .rec-level-value.stop { color: var(--red); }
+    .rec-level-value.target { color: var(--green); }
+
+    /* Research badges */
+    .research-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      font-size: 0.75rem;
+      padding: 0.2rem 0.6rem;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .research-badge.bullish { background: rgba(34,197,94,0.2); color: var(--green); }
+    .research-badge.neutral { background: rgba(234,179,8,0.2); color: #eab308; }
+    .research-badge.bearish { background: rgba(239,68,68,0.2); color: var(--red); }
+
+    .conviction-adj {
+      font-size: 0.7rem;
+      font-family: 'Orbitron', sans-serif;
+      margin-left: 0.3rem;
+    }
+
+    .conviction-adj.positive { color: var(--green); }
+    .conviction-adj.negative { color: var(--red); }
+
+    .research-summary {
+      display: none;
+      font-size: 0.8rem;
+      color: var(--silver);
+      margin-top: 0.5rem;
+      padding: 0.5rem;
+      background: rgba(0,212,255,0.05);
+      border-radius: 6px;
+      border-left: 3px solid var(--cyan);
+      line-height: 1.4;
+    }
+
+    .research-summary.open { display: block; }
+
+    .research-contradictions {
+      margin-top: 0.3rem;
+      font-size: 0.75rem;
+      color: var(--red);
+    }
+
+    .rec-research-info {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    /* Review badges */
+    .review-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      font-size: 0.7rem;
+      font-family: 'Orbitron', sans-serif;
+      padding: 0.15rem 0.5rem;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      cursor: pointer;
+    }
+
+    .review-badge.sell { background: rgba(239,68,68,0.2); color: var(--red); }
+    .review-badge.add { background: rgba(34,197,94,0.2); color: var(--green); }
+    .review-badge.hold { background: rgba(234,179,8,0.2); color: #eab308; }
+
+    .review-detail {
+      display: none;
+      font-size: 0.8rem;
+      color: var(--silver);
+      padding: 0.75rem;
+      background: rgba(0,212,255,0.05);
+      border-radius: 6px;
+      line-height: 1.4;
+    }
+
+    .review-detail.open { display: block; }
+
+    .review-detail .risk-factors {
+      margin-top: 0.3rem;
+      color: var(--red);
+      font-size: 0.75rem;
+    }
+
+    .review-detail .news-highlights {
+      margin-top: 0.3rem;
+      color: var(--cyan);
+      font-size: 0.75rem;
+    }
+
+    .review-timestamp {
+      font-size: 0.65rem;
+      color: var(--silver);
+      margin-top: 0.5rem;
+    }
+
+    .rec-signals {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.3rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .signal-tag {
+      font-size: 0.65rem;
+      padding: 0.15rem 0.5rem;
+      border-radius: 3px;
+      background: rgba(168,85,247,0.2);
+      color: var(--purple);
+    }
+
+    .rec-actions {
+      display: flex;
+      gap: 0.75rem;
+    }
+
+    .rec-actions button {
+      flex: 1;
+      padding: 0.6rem;
+      border: none;
+      border-radius: 8px;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-approve {
+      background: rgba(34,197,94,0.2);
+      color: var(--green);
+      border: 1px solid rgba(34,197,94,0.3) !important;
+    }
+
+    .btn-approve:hover { background: rgba(34,197,94,0.35); }
+
+    .btn-reject {
+      background: rgba(239,68,68,0.2);
+      color: var(--red);
+      border: 1px solid rgba(239,68,68,0.3) !important;
+    }
+
+    .btn-reject:hover { background: rgba(239,68,68,0.35); }
+
+    .btn-research {
+      background: rgba(0,212,255,0.15);
+      color: var(--cyan);
+      border: 1px solid rgba(0,212,255,0.3) !important;
+    }
+
+    .btn-research:hover { background: rgba(0,212,255,0.3); }
+
+    .rec-research-row {
+      margin-top: 0.5rem;
+    }
+
+    .rec-status {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.7rem;
+      text-align: center;
+      padding: 0.5rem;
+      border-radius: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .status-executed { background: rgba(34,197,94,0.15); color: var(--green); }
+    .status-rejected { background: rgba(239,68,68,0.15); color: var(--red); }
+    .status-expired { background: rgba(148,163,184,0.15); color: var(--silver); }
+
+    /* Positions table */
+    .table-wrap {
+      overflow-x: auto;
+      border-radius: 12px;
+      border: 1px solid rgba(0,212,255,0.15);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+    }
+
+    th {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--cyan);
+      text-align: left;
+      padding: 0.75rem 1rem;
+      background: var(--surface);
+      border-bottom: 1px solid rgba(0,212,255,0.2);
+    }
+
+    td {
+      padding: 0.75rem 1rem;
+      background: var(--surface);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+
+    tr:hover td { background: rgba(0,212,255,0.05); }
+
+    .mono { font-family: 'Monaco', 'Consolas', monospace; }
+    .positive { color: var(--green); }
+    .negative { color: var(--red); }
+
+    /* Learnings */
+    .learnings-list { display: flex; flex-direction: column; gap: 0.75rem; }
+
+    .learning-card {
+      background: var(--surface);
+      border: 1px solid rgba(0,212,255,0.15);
+      border-radius: 10px;
+      padding: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .learning-card:hover {
+      border-color: rgba(0,212,255,0.4);
+    }
+
+    .learning-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .learning-title { font-weight: 600; font-size: 0.9rem; }
+
+    .learning-salience {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.75rem;
+      color: var(--cyan);
+    }
+
+    .learning-body {
+      font-size: 0.8rem;
+      color: var(--silver);
+      margin-top: 0.5rem;
+      line-height: 1.5;
+      display: none;
+      white-space: pre-wrap;
+    }
+
+    .learning-card.open .learning-body { display: block; }
+
+    /* Empty state */
+    .empty-state {
+      text-align: center;
+      padding: 2rem;
+      color: var(--silver);
+      font-size: 0.9rem;
+      background: var(--surface);
+      border-radius: 12px;
+      border: 1px solid rgba(0,212,255,0.1);
+    }
+
+    .empty-state .icon { font-size: 2rem; margin-bottom: 0.5rem; }
+
+    /* Loading */
+    .loading {
+      text-align: center;
+      padding: 1rem;
+      color: var(--silver);
+      font-size: 0.85rem;
+    }
+
+    @keyframes pulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
+    .loading { animation: pulse 1.5s ease-in-out infinite; }
+
+    footer {
+      text-align: center;
+      margin-top: 3rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(0,212,255,0.1);
+      color: var(--silver);
+      font-size: 0.75rem;
+    }
+
+    @media (max-width: 768px) {
+      .stats-bar { grid-template-columns: repeat(2, 1fr); }
+      .rec-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 480px) {
+      .stats-bar { grid-template-columns: 1fr; }
+      body { padding: 0.75rem; }
+      .logo { font-size: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1 class="logo">HARVEST TRADING DASHBOARD</h1>
+      <p class="tagline">Automated Trading Pipeline &bull; Alpaca Paper Trading</p>
+      <nav class="nav-links">
+        <a href="https://app.alpaca.markets" target="_blank">Alpaca</a>
+        <a href="/research.html">Research</a>
+      </nav>
+    </header>
+
+    <!-- Stats Bar -->
+    <div class="stats-bar">
+      <div class="stat-card">
+        <div class="stat-value neutral" id="portfolio-value">--</div>
+        <div class="stat-label">Portfolio Value</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="daily-pl">--</div>
+        <div class="stat-label">Daily P&L</div>
+        <div class="pl-progress"><div class="pl-progress-bar" id="pl-bar" style="width:0%"></div></div>
+        <div class="pl-goal" id="pl-goal">Goal: $1,000</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value neutral" id="buying-power">--</div>
+        <div class="stat-label">Buying Power</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value neutral" id="open-positions">--</div>
+        <div class="stat-label">Open Positions</div>
+      </div>
+    </div>
+
+    <!-- Recommendations -->
+    <h2 class="section-title">Recommendations</h2>
+    <div class="rec-grid" id="recommendations">
+      <div class="loading">Loading recommendations...</div>
+    </div>
+
+    <!-- Positions -->
+    <h2 class="section-title">Open Positions</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Symbol</th>
+            <th>Qty</th>
+            <th>Entry</th>
+            <th>Current</th>
+            <th>P&L</th>
+            <th>P&L %</th>
+            <th>Market Value</th>
+            <th>Review</th>
+          </tr>
+        </thead>
+        <tbody id="positions-body">
+          <tr><td colspan="8" class="loading">Loading positions...</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Trade History -->
+    <h2 class="section-title">Recent Orders</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Symbol</th>
+            <th>Side</th>
+            <th>Qty</th>
+            <th>Type</th>
+            <th>Status</th>
+            <th>Filled</th>
+            <th>Created</th>
+          </tr>
+        </thead>
+        <tbody id="orders-body">
+          <tr><td colspan="7" class="loading">Loading orders...</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Learnings -->
+    <h2 class="section-title">Active Learnings</h2>
+    <div class="learnings-list" id="learnings">
+      <div class="loading">Loading learnings...</div>
+    </div>
+
+    <footer>
+      <p>Harvest Trading Dashboard &bull; Paper Trading Mode &bull; Built with TypeScript + Bun</p>
+    </footer>
+  </div>
+
+  <script>
+    const API = '';
+    const GOAL = 1000;
+
+    function fmt(n) {
+      return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(n);
+    }
+
+    function tickerLink(symbol) {
+      return `<a href="https://finance.yahoo.com/quote/${encodeURIComponent(symbol)}" target="_blank" rel="noopener" class="ticker-link" title="Research ${symbol} on Yahoo Finance">${symbol}</a>`;
+    }
+
+    function fmtDate(s) {
+      if (!s) return '--';
+      const d = new Date(s);
+      return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) + ' ' +
+             d.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+    }
+
+    async function fetchAPI(path) {
+      try {
+        const r = await fetch(API + path);
+        return await r.json();
+      } catch (e) {
+        console.error('API error:', path, e);
+        return null;
+      }
+    }
+
+    // Load account stats
+    async function loadStats() {
+      const account = await fetchAPI('/api/account');
+      if (!account || account.error) {
+        document.getElementById('portfolio-value').textContent = 'N/A';
+        document.getElementById('buying-power').textContent = 'N/A';
+        return;
+      }
+      const equity = parseFloat(account.equity || 0);
+      const lastEquity = parseFloat(account.last_equity || 0);
+      const bp = parseFloat(account.buying_power || 0);
+      const pl = equity - lastEquity;
+      const plPct = lastEquity > 0 ? (pl / lastEquity * 100) : 0;
+
+      document.getElementById('portfolio-value').textContent = fmt(equity);
+      document.getElementById('buying-power').textContent = fmt(bp);
+
+      const plEl = document.getElementById('daily-pl');
+      plEl.textContent = `${pl >= 0 ? '+' : ''}${fmt(pl)} (${plPct.toFixed(2)}%)`;
+      plEl.className = `stat-value ${pl >= 0 ? 'positive' : 'negative'}`;
+
+      // Progress bar toward daily goal
+      const progress = Math.min(Math.max((pl / GOAL) * 100, 0), 100);
+      const bar = document.getElementById('pl-bar');
+      bar.style.width = progress + '%';
+      bar.style.background = pl >= 0 ? 'var(--green)' : 'var(--red)';
+      document.getElementById('pl-goal').textContent = `${fmt(pl)} / ${fmt(GOAL)} daily goal`;
+    }
+
+    // Portfolio review data cache
+    let portfolioReviewData = null;
+
+    // Load positions (with review data)
+    async function loadPositions() {
+      const positions = await fetchAPI('/api/positions');
+      const tbody = document.getElementById('positions-body');
+      if (!positions || positions.error || !Array.isArray(positions) || positions.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="8" class="empty-state"><div class="icon">&#x1F4ED;</div>No open positions</td></tr>';
+        document.getElementById('open-positions').textContent = '0';
+        return;
+      }
+      document.getElementById('open-positions').textContent = positions.length;
+
+      // Fetch latest portfolio review if not cached
+      if (!portfolioReviewData) {
+        portfolioReviewData = await fetchAPI('/api/portfolio-review');
+      }
+
+      const reviewMap = {};
+      if (portfolioReviewData && Array.isArray(portfolioReviewData.reviews)) {
+        for (const r of portfolioReviewData.reviews) {
+          reviewMap[r.symbol] = r;
+        }
+      }
+
+      tbody.innerHTML = positions.map(p => {
+        const pl = parseFloat(p.unrealized_pl || 0);
+        const plPct = parseFloat(p.unrealized_plpc || 0) * 100;
+        const cls = pl >= 0 ? 'positive' : 'negative';
+        const review = reviewMap[p.symbol];
+
+        let reviewCell = '<td>--</td>';
+        if (review) {
+          const actionClass = review.action === 'SELL' ? 'sell' : review.action === 'ADD' ? 'add' : 'hold';
+          const actionLabel = review.action === 'SELL' ? '[SELL]' : review.action === 'ADD' ? '[ADD]' : '[HOLD]';
+          const urgencyIcon = review.urgency === 'high' ? ' (!!)' : review.urgency === 'medium' ? ' (!)' : '';
+          const detailId = `review-${p.symbol}`;
+
+          const riskHtml = (review.riskFactors && review.riskFactors.length > 0)
+            ? `<div class="risk-factors">Risks: ${review.riskFactors.join('; ')}</div>`
+            : '';
+          const newsHtml = (review.newsHighlights && review.newsHighlights.length > 0)
+            ? `<div class="news-highlights">News: ${review.newsHighlights.slice(0, 2).join('; ')}</div>`
+            : '';
+
+          reviewCell = `<td>
+            <span class="review-badge ${actionClass}" onclick="document.getElementById('${detailId}').classList.toggle('open')">
+              ${actionLabel}${urgencyIcon}
+            </span>
+            <div class="review-detail" id="${detailId}">
+              ${review.reasoning || ''}
+              ${riskHtml}
+              ${newsHtml}
+              ${review.upcomingEarnings ? `<div style="margin-top:0.3rem;color:var(--purple);font-size:0.75rem">Earnings: ${review.upcomingEarnings}</div>` : ''}
+            </div>
+          </td>`;
+        }
+
+        return `<tr>
+          <td><strong>${tickerLink(p.symbol)}</strong></td>
+          <td class="mono">${p.qty}</td>
+          <td class="mono">${fmt(parseFloat(p.avg_entry_price))}</td>
+          <td class="mono">${fmt(parseFloat(p.current_price))}</td>
+          <td class="mono ${cls}">${pl >= 0 ? '+' : ''}${fmt(pl)}</td>
+          <td class="mono ${cls}">${plPct >= 0 ? '+' : ''}${plPct.toFixed(2)}%</td>
+          <td class="mono">${fmt(parseFloat(p.market_value))}</td>
+          ${reviewCell}
+        </tr>`;
+      }).join('');
+
+      // Show review timestamp if available
+      if (portfolioReviewData && portfolioReviewData.date) {
+        const existingTs = document.getElementById('review-timestamp');
+        if (!existingTs) {
+          const ts = document.createElement('div');
+          ts.id = 'review-timestamp';
+          ts.className = 'review-timestamp';
+          ts.textContent = `Last reviewed: ${portfolioReviewData.date} | Health: ${portfolioReviewData.summary?.portfolioHealth || 'Unknown'}`;
+          document.getElementById('positions-body').closest('.table-wrap').after(ts);
+        }
+      }
+    }
+
+    // Load orders
+    async function loadOrders() {
+      const orders = await fetchAPI('/api/orders');
+      const tbody = document.getElementById('orders-body');
+      if (!orders || orders.error || !Array.isArray(orders) || orders.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" class="empty-state"><div class="icon">&#x1F4CB;</div>No orders</td></tr>';
+        return;
+      }
+      tbody.innerHTML = orders.slice(0, 20).map(o => {
+        const sideClass = o.side === 'buy' ? 'positive' : 'negative';
+        return `<tr>
+          <td><strong>${tickerLink(o.symbol)}</strong></td>
+          <td class="${sideClass}">${o.side.toUpperCase()}</td>
+          <td class="mono">${o.qty || o.notional || '--'}</td>
+          <td>${o.type}</td>
+          <td>${o.status}</td>
+          <td class="mono">${o.filled_avg_price ? fmt(parseFloat(o.filled_avg_price)) : '--'}</td>
+          <td>${fmtDate(o.created_at)}</td>
+        </tr>`;
+      }).join('');
+    }
+
+    // Load recommendations
+    async function loadRecommendations() {
+      const recs = await fetchAPI('/api/recommendations');
+      const container = document.getElementById('recommendations');
+      if (!recs || !Array.isArray(recs) || recs.length === 0) {
+        container.innerHTML = `<div class="empty-state"><div class="icon">&#x1F52E;</div>No recommendations yet. Harvest will generate signals when market conditions warrant.</div>`;
+        return;
+      }
+      container.innerHTML = recs.map(r => {
+        const dots = Array.from({length: 10}, (_, i) =>
+          `<div class="conviction-dot ${i < r.conviction ? 'filled' : ''}"></div>`
+        ).join('');
+
+        let actions;
+        const researchBtn = `<div class="rec-research-row"><button class="btn-research" onclick="deepResearch('${r.ticker}')" style="width:100%;padding:0.6rem;border:none;border-radius:8px;font-family:'Orbitron',sans-serif;font-size:0.75rem;letter-spacing:0.05em;cursor:pointer;transition:all 0.2s ease;background:rgba(0,212,255,0.15);color:var(--cyan);border:1px solid rgba(0,212,255,0.3)!important">Research</button></div>`;
+        if (r.status === 'pending') {
+          actions = `<div class="rec-status" style="background:rgba(0,212,255,0.15);color:var(--cyan)">queued (auto-execute if conv >= 5)</div>${researchBtn}`;
+        } else {
+          const cls = r.status === 'executed' ? 'status-executed' : 'status-expired';
+          actions = `<div class="rec-status ${cls}">${r.status}${r.expireReason ? ' (' + r.expireReason + ')' : ''}</div>${researchBtn}`;
+        }
+
+        const signals = (r.signals || []).map(s => `<span class="signal-tag">${s}</span>`).join('');
+
+        // Research enrichment display
+        let researchHtml = '';
+        if (r.researchScore !== undefined) {
+          const pct = Math.round(r.researchScore * 100);
+          const badgeClass = pct > 30 ? 'bullish' : pct < -20 ? 'bearish' : 'neutral';
+          const sentiment = pct > 30 ? '[+]' : pct < -20 ? '[-]' : '[~]';
+          const convAdj = r.convictionAdjustment !== undefined ? r.convictionAdjustment : 0;
+          const convClass = convAdj >= 0 ? 'positive' : 'negative';
+          const convSign = convAdj >= 0 ? '+' : '';
+          const cardId = `research-${r.id}`;
+
+          researchHtml = `<div class="rec-research-info">
+            <span class="research-badge ${badgeClass}" onclick="document.getElementById('${cardId}').classList.toggle('open')">
+              ${sentiment} Research: ${pct > 0 ? '+' : ''}${pct}%
+            </span>
+            <span class="conviction-adj ${convClass}">(Conv: ${convSign}${convAdj})</span>
+          </div>
+          <div class="research-summary" id="${cardId}">
+            ${r.researchSummary || 'No summary available.'}
+            ${(r.researchContradictions && r.researchContradictions.length > 0)
+              ? `<div class="research-contradictions">Contradictions: ${r.researchContradictions.join('; ')}</div>`
+              : ''}
+          </div>`;
+        }
+
+        return `<div class="rec-card">
+          <div class="rec-header">
+            <span class="rec-ticker">${tickerLink(r.ticker)}</span>
+            <span class="rec-direction ${r.direction}">${r.direction}</span>
+          </div>
+          <div class="rec-conviction">${dots}</div>
+          ${researchHtml}
+          <div class="rec-thesis">${r.thesis || ''}</div>
+          <div class="rec-levels">
+            <div class="rec-level"><div class="rec-level-label">Entry</div><div class="rec-level-value entry">${r.entryPrice ? fmt(r.entryPrice) : '--'}</div></div>
+            <div class="rec-level"><div class="rec-level-label">Stop</div><div class="rec-level-value stop">${r.stopLoss ? fmt(r.stopLoss) : '--'}</div></div>
+            <div class="rec-level"><div class="rec-level-label">Target</div><div class="rec-level-value target">${r.takeProfit ? fmt(r.takeProfit) : '--'}</div></div>
+          </div>
+          ${signals ? `<div class="rec-signals">${signals}</div>` : ''}
+          ${actions}
+        </div>`;
+      }).join('');
+    }
+
+    function deepResearch(ticker) {
+      window.open(`/research.html?ticker=${encodeURIComponent(ticker)}`, '_blank');
+    }
+
+    async function approveRec(id) {
+      if (!confirm('Execute this trade via Alpaca?')) return;
+      await fetch(`${API}/api/recommendations/${id}/approve`, { method: 'POST' });
+      loadRecommendations();
+      setTimeout(() => { loadPositions(); loadOrders(); loadStats(); }, 2000);
+    }
+
+    async function rejectRec(id) {
+      await fetch(`${API}/api/recommendations/${id}/reject`, { method: 'POST' });
+      loadRecommendations();
+    }
+
+    async function reconsiderRec(id) {
+      await fetch(`${API}/api/recommendations/${id}/reconsider`, { method: 'POST' });
+      loadRecommendations();
+    }
+
+    // Load learnings
+    async function loadLearnings() {
+      const learnings = await fetchAPI('/api/learnings');
+      const container = document.getElementById('learnings');
+      if (!learnings || !Array.isArray(learnings) || learnings.length === 0) {
+        container.innerHTML = `<div class="empty-state"><div class="icon">&#x1F9E0;</div>No learnings yet. Trade and the system learns.</div>`;
+        return;
+      }
+      container.innerHTML = learnings.map(l => `
+        <div class="learning-card" onclick="this.classList.toggle('open')">
+          <div class="learning-header">
+            <span class="learning-title">${l.title}</span>
+            <span class="learning-salience">${l.salience.toFixed(2)}</span>
+          </div>
+          <div class="learning-body">${l.body}</div>
+        </div>
+      `).join('');
+    }
+
+    // Initial load + polling
+    async function loadAll() {
+      await Promise.all([loadStats(), loadPositions(), loadOrders(), loadRecommendations(), loadLearnings()]);
+    }
+
+    loadAll();
+    setInterval(() => { loadStats(); loadPositions(); }, 30000);
+    setInterval(loadRecommendations, 15000);
+  </script>
+</body>
+</html>
